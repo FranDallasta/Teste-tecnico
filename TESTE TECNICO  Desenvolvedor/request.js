@@ -3,16 +3,18 @@ var myArray = [];
 $(document).ready(function(){
   $('form').on('submit', function(event) {
     event.preventDefault();
-    url_user= fazerUrl(document.getElementById("cep").value)
+    let url_user= fazerUrl(document.getElementById("cep").value)
     $.ajax({
       url: url_user,
       type: "GET",
       success: function(result) {
         myArray =  $.makeArray(result);
-			  buildTable(myArray)
-      }, 
-      error: function() {
-        alert('cep inexistente');
+        if(typeof myArray[0].cep !== 'undefined'){
+          buildTable(myArray)
+        }
+        if(typeof myArray[0].cep === 'undefined'){
+          alert('cep inexistente');
+        }
       }
     }) 
   });
@@ -39,6 +41,6 @@ function buildTable(data){
 }
 
 function fazerUrl(cep){
-  var url = "https://viacep.com.br/ws/"+cep+"/json/"
-  return url;
+
+  return "https://viacep.com.br/ws/"+cep+"/json/";
 }
